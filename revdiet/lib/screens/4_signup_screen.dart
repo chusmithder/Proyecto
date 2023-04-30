@@ -18,5 +18,4 @@ class SignUpScreenState extends State<StatefulWidget> {
       ),
     );
   }
-
 }
