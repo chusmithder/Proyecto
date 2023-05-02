@@ -2,42 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:revdiet/components/1_custom_text_field.dart';
 import 'package:revdiet/components/2_custom_button.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
-  
+class LogInScreen extends StatefulWidget {
+  const LogInScreen({super.key});
+
   @override
   State<StatefulWidget> createState() {
-    return SignUpScreenState();
+    return LogInScreenState();
   }
 }
 
-class SignUpScreenState extends State<StatefulWidget> {
-  final usernameController = TextEditingController();
+class LogInScreenState extends State<StatefulWidget> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final passwordConfirmationController = TextEditingController();
 
-  late String physicalGoal;
-  late String activityLevel;
-  late String gender;
-  late int age;
-  late String residenceCountry;
-  late int height;//cm
-  late int weight;
-  late int desiredWeight;
-
-  //username
-  //email
-  //contraseña
-  //edad
-  //peso
-  //objetivo
-  //nivel de actividad
-
-  void _createAccount() {
-    
+  void _signInUser() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(
+          'Incorrect data',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Colors.red,
+      ),
+    );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -50,23 +40,14 @@ class SignUpScreenState extends State<StatefulWidget> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(height: 50),
-                const Text('Welcome to RevDiet',
+                const Text('Hello',
                     style: TextStyle(
-                        fontSize: 30,
+                        fontSize: 40,
                         fontWeight: FontWeight.bold,
                         color: Colors.white)),
-                const SizedBox(height: 10),
-                const Text('Create an account',
+                const Text('Sign in into your account',
                     style: TextStyle(fontSize: 20, color: Colors.grey)),
                 const SizedBox(height: 50),
-
-                //full name textfield
-                CustomTextField(
-                  controller: usernameController,
-                  hintText: 'Full Name',
-                  obscuredText: false,
-                  icon: Icons.mail,
-                ),
 
                 //email textfield
                 CustomTextField(
@@ -86,19 +67,11 @@ class SignUpScreenState extends State<StatefulWidget> {
                   icon: Icons.lock,
                 ),
 
-                //password confiramtion textfield
-                CustomTextField(
-                  controller: passwordConfirmationController,
-                  hintText: 'Password confirmation',
-                  obscuredText: true,
-                  icon: Icons.lock,
-                ),
-
                 const SizedBox(height: 30),
                 //sign in button
                 CustomButton(
-                  onTap: _createAccount,
-                  buttonText: 'Create account',
+                  onTap: _signInUser,
+                  buttonText: 'Log in',
                 ),
 
                 const SizedBox(height: 30),
