@@ -16,7 +16,7 @@ class SignUpScreenState extends State<StatefulWidget> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final passwordConfirmationController = TextEditingController();
-
+  
   late String physicalGoal;
   late String activityLevel;
   late String gender;
