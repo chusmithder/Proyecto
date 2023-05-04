@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "406775095844",
+    "project_id": "revdiet-962fe",
+    "storage_bucket": "revdiet-962fe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:406775095844:android:ea02e20589011ad8982eb1",
+        "android_client_info": {
+          "package_name": "com.example.revdiet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "406775095844-c4bglnu5iun811mj7ib0au47mo5e4sl6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2ryEmtpx0KzG8JVvekRwWNSriMaGui9U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "406775095844-c4bglnu5iun811mj7ib0au47mo5e4sl6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

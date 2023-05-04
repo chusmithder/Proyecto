@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:revdiet/components/1_custom_text_field.dart';
 import 'package:revdiet/components/2_custom_button.dart';
 
 class LogInScreen extends StatefulWidget {
-  const LogInScreen({super.key});
+  final Function()? onTap;
+  const LogInScreen({required this.onTap, super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -11,18 +13,38 @@ class LogInScreen extends StatefulWidget {
   }
 }
 
-class LogInScreenState extends State<StatefulWidget> {
+class LogInScreenState extends State<LogInScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  void _signInUser() {
+  void _signInUser() async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+      Navigator.pop(context);
+    } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
+      showErrorMessage(e.code);
+    }
+  }
+
+  void showErrorMessage(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
+      SnackBar(
         content: Text(
-          'Incorrect data',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+          message,
+          style: const TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.red,
       ),
@@ -85,11 +107,14 @@ class LogInScreenState extends State<StatefulWidget> {
                       style: TextStyle(color: Colors.grey[700]),
                     ),
                     const SizedBox(width: 4),
-                    const Text(
-                      'Register now',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
+                    GestureDetector(
+                      onTap: widget.onTap,
+                      child: const Text(
+                        'Register now',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],

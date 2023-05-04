@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:revdiet/components/1_custom_text_field.dart';
 import 'package:revdiet/components/2_custom_button.dart';
 import 'package:revdiet/components/3_custom_tile_input_food.dart';
 
@@ -24,7 +23,7 @@ class CreateFoodScreen extends StatelessWidget {
       backgroundColor: const Color.fromARGB(255, 51, 51, 51),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 66, 204, 137),
-        title: const Text('Create food'),
+        title: const Center(child: Text('Create food')),
       ),
       body: SafeArea(
         child: SingleChildScrollView(

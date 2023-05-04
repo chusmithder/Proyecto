@@ -1,28 +1,30 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:revdiet/components/1_custom_text_field.dart';
 import 'package:revdiet/components/2_custom_button.dart';
 
 class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
-  
+  final Function()? onTap;
+  const SignUpScreen({required this.onTap, super.key});
+
   @override
   State<StatefulWidget> createState() {
     return SignUpScreenState();
   }
 }
 
-class SignUpScreenState extends State<StatefulWidget> {
+class SignUpScreenState extends State<SignUpScreen> {
   final usernameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final passwordConfirmationController = TextEditingController();
-  
+
   late String physicalGoal;
   late String activityLevel;
   late String gender;
   late int age;
   late String residenceCountry;
-  late int height;//cm
+  late int height; //cm
   late int weight;
   late int desiredWeight;
 
@@ -34,10 +36,43 @@ class SignUpScreenState extends State<StatefulWidget> {
   //objetivo
   //nivel de actividad
 
-  void _createAccount() {
-    
+  void _createAccount() async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+
+    try {
+      if (passwordController.text == passwordConfirmationController.text) {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+      } else {
+        showErrorMessage('Passwords dont match!');
+      }
+      Navigator.pop(context);
+    } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
+      showErrorMessage(e.code);
+    }
   }
 
+  void showErrorMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: const TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.red,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,15 +143,18 @@ class SignUpScreenState extends State<StatefulWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Not a member?',
+                      'Already have an account?',
                       style: TextStyle(color: Colors.grey[700]),
                     ),
                     const SizedBox(width: 4),
-                    const Text(
-                      'Register now',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
+                    GestureDetector(
+                      onTap: widget.onTap,
+                      child: const Text(
+                        'Login now',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],

@@ -1,9 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:revdiet/components/1_custom_text_field.dart';
 import 'package:revdiet/components/2_custom_button.dart';
 
 class HomePageScreen extends StatefulWidget {
-  const HomePageScreen({super.key});
+  HomePageScreen({super.key});
+
+  final user = FirebaseAuth.instance.currentUser!;
 
   @override
   State<StatefulWidget> createState() {
@@ -11,10 +14,18 @@ class HomePageScreen extends StatefulWidget {
   }
 }
 
-class HomePageScreenState extends State<StatefulWidget> {
+class HomePageScreenState extends State<HomePageScreen> {
+
+  void _logout() {
+    FirebaseAuth.instance.signOut();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        actions: [IconButton(icon: const Icon(Icons.logout), onPressed: _logout,)],
+      ),
       backgroundColor: const Color.fromARGB(255, 51, 51, 51),
       body: SafeArea(
         child: Container(
@@ -23,6 +34,7 @@ class HomePageScreenState extends State<StatefulWidget> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Text('sign as ' + widget.user.email!),
                 const SizedBox(height: 25),
                 const Text('RevDiet',
                     style: TextStyle(
