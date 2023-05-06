@@ -47,8 +47,11 @@ dependencies:
 
   # Para peticiones HTTP
   http: ^0.13.5
+
+  #firebase
   firebase_core: ^2.11.0
   firebase_auth: ^4.5.0
+  cloud_firestore: ^4.6.0
 
 dev_dependencies:
   flutter_test:

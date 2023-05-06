@@ -5,12 +5,14 @@ class CustomTextField extends StatelessWidget {
   final String hintText;
   final bool obscuredText;
   final icon;
+  final TextInputType inputType;
 
   const CustomTextField(
       {required this.controller,
       required this.hintText,
       required this.obscuredText,
       required this.icon,
+      required this.inputType,
       super.key});
 
   @override
@@ -37,6 +39,7 @@ class CustomTextField extends StatelessWidget {
           hintStyle: const TextStyle(color: Colors.grey),
           filled: true,
         ),
+        keyboardType: inputType,
       ),
     );
   }

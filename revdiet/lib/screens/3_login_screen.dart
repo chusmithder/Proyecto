@@ -77,6 +77,7 @@ class LogInScreenState extends State<LogInScreen> {
                   hintText: 'Email',
                   obscuredText: false,
                   icon: Icons.mail,
+                  inputType: TextInputType.emailAddress,
                 ),
 
                 const SizedBox(height: 10),
@@ -87,6 +88,7 @@ class LogInScreenState extends State<LogInScreen> {
                   hintText: 'Password',
                   obscuredText: true,
                   icon: Icons.lock,
+                  inputType: TextInputType.text,
                 ),
 
                 const SizedBox(height: 30),

@@ -5,6 +5,7 @@ import 'package:revdiet/components/2_custom_button.dart';
 
 class SignUpScreen extends StatefulWidget {
   final Function()? onTap;
+
   const SignUpScreen({required this.onTap, super.key});
 
   @override
@@ -14,27 +15,50 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class SignUpScreenState extends State<SignUpScreen> {
+  //username
   final usernameController = TextEditingController();
+  //email
   final emailController = TextEditingController();
+  //password
   final passwordController = TextEditingController();
+  //passwordConfirmation
   final passwordConfirmationController = TextEditingController();
 
-  late String physicalGoal;
-  late String activityLevel;
-  late String gender;
-  late int age;
-  late String residenceCountry;
-  late int height; //cm
-  late int weight;
-  late int desiredWeight;
+  //physicalGoal
+  static List<String> physicalGoalList = <String>[
+    'Gain weight',
+    'Maintain weight',
+    'Lose weight'
+  ];
+  String physicalGoalValue = physicalGoalList.first;
 
-  //username
-  //email
-  //contraseña
-  //edad
-  //peso
-  //objetivo
-  //nivel de actividad
+  //activityLevel
+  static List<String> activityLevelList = <String>[
+    'Not very active',
+    'Slightly active',
+    'Active',
+    'Very Active'
+  ];
+  String activityLevelValue = activityLevelList.first;
+
+  //gender
+  static List<String> genderList = <String>[
+    'Male',
+    'Female',
+    'Another',
+  ];
+  String genderValue = genderList.first;
+
+  //age
+  final ageController = TextEditingController();
+  // height
+  final heightController = TextEditingController();
+  // weight;
+  final weightController = TextEditingController();
+  // desiredWeight;
+  final desiredWeightController = TextEditingController();
+  // residenceCountry
+  final residenceCountryController = TextEditingController();
 
   void _createAccount() async {
     showDialog(
@@ -47,19 +71,39 @@ class SignUpScreenState extends State<SignUpScreen> {
     );
 
     try {
-      if (passwordController.text == passwordConfirmationController.text) {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailController.text,
-          password: passwordController.text,
-        );
+      if (allFieldsAreFilled()) {
+        if (passwordController.text == passwordConfirmationController.text) {
+          //insert into authbase
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: emailController.text,
+            password: passwordController.text,
+          );
+          //insert into users collection
+
+          
+
+        } else {
+          showErrorMessage('Passwords do not match!');
+        }
       } else {
-        showErrorMessage('Passwords dont match!');
+        showErrorMessage('Complete required fields!');
       }
       Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context);
       showErrorMessage(e.code);
     }
+  }
+
+  bool allFieldsAreFilled() {
+    return usernameController.text.isNotEmpty &&
+        emailController.text.isNotEmpty &&
+        passwordController.text.isNotEmpty &&
+        ageController.text.isNotEmpty &&
+        heightController.text.isNotEmpty &&
+        weightController.text.isNotEmpty &&
+        desiredWeightController.text.isNotEmpty &&
+        residenceCountryController.text.isNotEmpty;
   }
 
   void showErrorMessage(String message) {
@@ -95,38 +139,266 @@ class SignUpScreenState extends State<SignUpScreen> {
                     style: TextStyle(fontSize: 20, color: Colors.grey)),
                 const SizedBox(height: 50),
 
+                //physicalGoal
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 50),
+                  alignment: Alignment.centerLeft,
+                  child: const Text(
+                    'What is your goal?',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ),
+                Container(
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.symmetric(horizontal: 50),
+                  child: DropdownButton<String>(
+                    isExpanded: true,
+                    dropdownColor: Colors.grey,
+                    alignment: Alignment.center,
+                    value: physicalGoalValue,
+                    icon: const Icon(Icons.arrow_downward),
+                    iconSize: 15,
+                    underline: Container(
+                      height: 1,
+                      color: Color.fromARGB(255, 66, 204, 137),
+                    ),
+                    style: const TextStyle(color: Colors.white),
+                    onChanged: (String? value) {
+                      setState(() {
+                        physicalGoalValue = value!;
+                      });
+                    },
+                    items: physicalGoalList
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+
+                //activityLevel
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 50),
+                  alignment: Alignment.centerLeft,
+                  child: const Text(
+                    'What is activity level?',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ),
+                Container(
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.symmetric(horizontal: 50),
+                  child: DropdownButton<String>(
+                    isExpanded: true,
+                    dropdownColor: Colors.grey,
+                    alignment: Alignment.center,
+                    value: activityLevelValue,
+                    icon: const Icon(Icons.arrow_downward),
+                    iconSize: 15,
+                    underline: Container(
+                      height: 1,
+                      color: Color.fromARGB(255, 66, 204, 137),
+                    ),
+                    style: const TextStyle(color: Colors.white),
+                    onChanged: (String? value) {
+                      setState(() {
+                        activityLevelValue = value!;
+                      });
+                    },
+                    items: activityLevelList
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                Row(
+                  //gender
+                  children: [
+                    Expanded(
+                      child: Column(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.symmetric(horizontal: 50),
+                            alignment: Alignment.centerLeft,
+                            child: const Text(
+                              'Select your gender',
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10)),
+                            alignment: Alignment.centerLeft,
+                            padding: const EdgeInsets.symmetric(horizontal: 50),
+                            child: DropdownButton<String>(
+                              isExpanded: true,
+                              dropdownColor: Colors.grey,
+                              alignment: Alignment.center,
+                              value: genderValue,
+                              icon: const Icon(Icons.arrow_downward),
+                              iconSize: 15,
+                              underline: Container(
+                                height: 1,
+                                color: Color.fromARGB(255, 66, 204, 137),
+                              ),
+                              style: const TextStyle(color: Colors.white),
+                              onChanged: (String? value) {
+                                setState(() {
+                                  genderValue = value!;
+                                });
+                              },
+                              items: genderList.map<DropdownMenuItem<String>>(
+                                  (String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    //age
+                    Expanded(
+                      child: CustomTextField(
+                        controller: ageController,
+                        hintText: 'Age',
+                        obscuredText: false,
+                        icon: Icons.arrow_circle_up,
+                        inputType: TextInputType.text,
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 20),
+
+                Row(
+                  children: [
+                    //height
+                    Expanded(
+                      child: CustomTextField(
+                        controller: heightController,
+                        hintText: 'Height',
+                        obscuredText: false,
+                        icon: Icons.height,
+                        inputType: TextInputType.number,
+                      ),
+                    ),
+                    //weight
+                    Expanded(
+                      child: CustomTextField(
+                        controller: weightController,
+                        hintText: 'Weight',
+                        obscuredText: false,
+                        icon: Icons.scale,
+                        inputType: TextInputType.number,
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 20),
+
+                //desiredWeight
+                Row(
+                  children: [
+                    Expanded(
+                      child: CustomTextField(
+                        controller: desiredWeightController,
+                        hintText: 'Desired weight',
+                        obscuredText: false,
+                        icon: Icons.scale_outlined,
+                        inputType: TextInputType.number,
+                      ),
+                    ),
+
+                    //residenceCountry
+                    Expanded(
+                      child: CustomTextField(
+                        controller: residenceCountryController,
+                        hintText: 'Residence Country',
+                        obscuredText: false,
+                        icon: Icons.location_city,
+                        inputType: TextInputType.text,
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 20),
+
                 //full name textfield
-                CustomTextField(
-                  controller: usernameController,
-                  hintText: 'Full Name',
-                  obscuredText: false,
-                  icon: Icons.mail,
-                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    color: Colors.grey[900],
+                  ),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 20),
 
-                //email textfield
-                CustomTextField(
-                  controller: emailController,
-                  hintText: 'Email',
-                  obscuredText: false,
-                  icon: Icons.mail,
-                ),
+                      CustomTextField(
+                        controller: usernameController,
+                        hintText: 'Full Name',
+                        obscuredText: false,
+                        icon: Icons.mail,
+                        inputType: TextInputType.text,
+                      ),
 
-                const SizedBox(height: 10),
+                      const SizedBox(height: 20),
 
-                //password textfield
-                CustomTextField(
-                  controller: passwordController,
-                  hintText: 'Password',
-                  obscuredText: true,
-                  icon: Icons.lock,
-                ),
+                      //email textfield
+                      CustomTextField(
+                        controller: emailController,
+                        hintText: 'Email',
+                        obscuredText: false,
+                        icon: Icons.mail,
+                        inputType: TextInputType.emailAddress,
+                      ),
 
-                //password confiramtion textfield
-                CustomTextField(
-                  controller: passwordConfirmationController,
-                  hintText: 'Password confirmation',
-                  obscuredText: true,
-                  icon: Icons.lock,
+                      const SizedBox(height: 20),
+
+                      //password textfield
+                      CustomTextField(
+                        controller: passwordController,
+                        hintText: 'Password',
+                        obscuredText: true,
+                        icon: Icons.lock,
+                        inputType: TextInputType.text,
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      //password confiramtion textfield
+                      CustomTextField(
+                        controller: passwordConfirmationController,
+                        hintText: 'Password confirmation',
+                        obscuredText: true,
+                        icon: Icons.lock,
+                        inputType: TextInputType.text,
+                      ),
+
+                      const SizedBox(height: 20),
+                    ],
+                  ),
                 ),
 
                 const SizedBox(height: 30),

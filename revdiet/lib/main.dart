@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:revdiet/screens/1_auth_page.dart';
 import 'package:revdiet/screens/3_login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:revdiet/screens/4_signup_screen.dart';
+import 'package:revdiet/screens/5_1_home_screen.dart';
+import 'package:revdiet/screens/5_0_home_page.dart';
 import 'firebase_options.dart';
 
 void main(List<String> args) async {
@@ -16,9 +19,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: AuthPage(),
+      theme: ThemeData(
+        backgroundColor: const Color.fromARGB(255, 51, 51, 51),
+      ),
+      home: SignUpScreen(onTap: (){})
     );
   }
 }
