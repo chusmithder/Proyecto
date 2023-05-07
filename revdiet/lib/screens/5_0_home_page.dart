@@ -1,7 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:revdiet/components/1_custom_text_field.dart';
-import 'package:revdiet/components/2_custom_button.dart';
 import 'package:revdiet/screens/5_1_home_screen.dart';
 import 'package:revdiet/screens/5_2_scale_screen.dart';
 import 'package:revdiet/screens/5_3_user_screen.dart';
@@ -11,13 +9,51 @@ class HomePage extends StatefulWidget {
 
   // final user = FirebaseAuth.instance.currentUser!;
 
+  
+  //calorias totales
+  
+  
+
+  //calorias completadas
+
   @override
   State<StatefulWidget> createState() {
     return HomePageState();
   }
+
 }
 
 class HomePageState extends State<HomePage> {
+  
+  @override
+  void initState() {
+    // _loadCurrentUser();
+    super.initState();
+  }
+
+  Future<void> _loadCurrentUser() async {
+    var db = FirebaseFirestore.instance;
+    var usersAuth = db.collection('dtUsers');
+
+    var users = await usersAuth.get();
+    
+    users.docs.forEach((doc) {
+      print(doc.data());
+    });
+
+
+    // var user1 = usersAuth.doc('1');
+
+    
+    // user1.get().then(
+    //   (DocumentSnapshot doc) {
+    //     final data = doc.data() as Map<String, dynamic>;
+    //     // ...
+    //   },
+    //   onError: (e) => print("Error getting document: $e"));
+
+  }
+
   int _selectedIndex = 0;
   static const List<Widget> _screens = <Widget>[
     HomeScreen(),

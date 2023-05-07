@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:revdiet/screens/1_auth_page.dart';
 import 'package:revdiet/screens/3_login_screen.dart';
@@ -19,12 +20,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         backgroundColor: const Color.fromARGB(255, 51, 51, 51),
       ),
-      home: SignUpScreen(onTap: (){})
+      home: HomePage()
     );
   }
 }

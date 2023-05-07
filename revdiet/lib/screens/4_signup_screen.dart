@@ -31,7 +31,6 @@ class SignUpScreenState extends State<SignUpScreen> {
     'Lose weight'
   ];
   String physicalGoalValue = physicalGoalList.first;
-
   //activityLevel
   static List<String> activityLevelList = <String>[
     'Not very active',
@@ -40,23 +39,18 @@ class SignUpScreenState extends State<SignUpScreen> {
     'Very Active'
   ];
   String activityLevelValue = activityLevelList.first;
-
   //gender
   static List<String> genderList = <String>[
     'Male',
     'Female',
-    'Another',
   ];
   String genderValue = genderList.first;
-
-  //age
-  final ageController = TextEditingController();
+  //birthdate
+  DateTime birthDateValue = DateTime(2022, 12, 24);
   // height
   final heightController = TextEditingController();
   // weight;
   final weightController = TextEditingController();
-  // desiredWeight;
-  final desiredWeightController = TextEditingController();
   // residenceCountry
   final residenceCountryController = TextEditingController();
 
@@ -78,7 +72,9 @@ class SignUpScreenState extends State<SignUpScreen> {
             email: emailController.text,
             password: passwordController.text,
           );
+
           //insert into users collection
+
 
 
 
@@ -99,10 +95,8 @@ class SignUpScreenState extends State<SignUpScreen> {
     return usernameController.text.isNotEmpty &&
         emailController.text.isNotEmpty &&
         passwordController.text.isNotEmpty &&
-        ageController.text.isNotEmpty &&
         heightController.text.isNotEmpty &&
         weightController.text.isNotEmpty &&
-        desiredWeightController.text.isNotEmpty &&
         residenceCountryController.text.isNotEmpty;
   }
 
@@ -115,6 +109,15 @@ class SignUpScreenState extends State<SignUpScreen> {
         ),
         backgroundColor: Colors.red,
       ),
+    );
+  }
+
+  Future<DateTime?> _pickDate() {
+    return showDatePicker(
+      context: context,
+      initialDate: birthDateValue,
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100),
     );
   }
 
@@ -276,12 +279,36 @@ class SignUpScreenState extends State<SignUpScreen> {
 
                     //age
                     Expanded(
-                      child: CustomTextField(
-                        controller: ageController,
-                        hintText: 'Age',
-                        obscuredText: false,
-                        icon: Icons.arrow_circle_up,
-                        inputType: TextInputType.text,
+                      child: Column(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.symmetric(horizontal: 50),
+                            alignment: Alignment.centerLeft,
+                            child: const Text(
+                              'Select your birthdate',
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ),
+                          const SizedBox(height: 10,),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            alignment: Alignment.centerLeft,
+                            padding: const EdgeInsets.symmetric(horizontal: 50),
+                            child: MaterialButton(
+                              child: Text('${birthDateValue.year.toString()} - ${birthDateValue.month.toString()} - ${birthDateValue.day.toString()}', style: const TextStyle(color: Colors.white),),
+                              onPressed: () async {
+                                final date = await _pickDate();
+                                if (date == null) return; //pressed cancel
+                                setState(() {
+                                  birthDateValue = date;
+                                });
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -319,16 +346,6 @@ class SignUpScreenState extends State<SignUpScreen> {
                 //desiredWeight
                 Row(
                   children: [
-                    Expanded(
-                      child: CustomTextField(
-                        controller: desiredWeightController,
-                        hintText: 'Desired weight',
-                        obscuredText: false,
-                        icon: Icons.scale_outlined,
-                        inputType: TextInputType.number,
-                      ),
-                    ),
-
                     //residenceCountry
                     Expanded(
                       child: CustomTextField(
