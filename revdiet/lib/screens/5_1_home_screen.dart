@@ -30,11 +30,13 @@ class HomeScreenState extends State<HomeScreen> {
             children: [
               // Text('sign as ' + widget.user.email!),
               const SizedBox(height: 25),
-              const Text('RevDiet',
-                  style: TextStyle(
-                      fontSize: 35,
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(255, 66, 204, 137))),
+              GestureDetector(
+                child: const Text('RevDiet',
+                    style: TextStyle(
+                        fontSize: 35,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 66, 204, 137))),
+              ),
               const SizedBox(height: 25),
               Container(
                 padding: const EdgeInsets.all(15),
@@ -49,7 +51,7 @@ class HomeScreenState extends State<HomeScreen> {
                     children: [
                       const SizedBox(height: 20),
                       const Text(
-                        'Calorias',
+                        'Calories',
                         style: TextStyle(color: Colors.white, fontSize: 18),
                       ),
                       const SizedBox(height: 20),
@@ -100,6 +102,9 @@ class HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                       const SizedBox(height: 20),
+                      MaterialButton(
+                        onPressed: () {},
+                      ),
                     ],
                   ),
                 ),

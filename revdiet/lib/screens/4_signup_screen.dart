@@ -80,7 +80,7 @@ class SignUpScreenState extends State<SignUpScreen> {
           );
           //insert into users collection
 
-          
+
 
         } else {
           showErrorMessage('Passwords do not match!');
@@ -344,7 +344,7 @@ class SignUpScreenState extends State<SignUpScreen> {
 
                 const SizedBox(height: 20),
 
-                //full name textfield
+                //username textfield
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
@@ -357,9 +357,9 @@ class SignUpScreenState extends State<SignUpScreen> {
 
                       CustomTextField(
                         controller: usernameController,
-                        hintText: 'Full Name',
+                        hintText: 'Username',
                         obscuredText: false,
-                        icon: Icons.mail,
+                        icon: Icons.person,
                         inputType: TextInputType.text,
                       ),
 
@@ -430,7 +430,8 @@ class SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ),
                   ],
-                )
+                ),
+                const SizedBox(height: 30),
               ],
             ),
           ),
