@@ -75,9 +75,6 @@ class SignUpScreenState extends State<SignUpScreen> {
 
           //insert into users collection
 
-
-
-
         } else {
           showErrorMessage('Passwords do not match!');
         }
@@ -289,7 +286,9 @@ class SignUpScreenState extends State<SignUpScreen> {
                               style: TextStyle(color: Colors.grey),
                             ),
                           ),
-                          const SizedBox(height: 10,),
+                          const SizedBox(
+                            height: 10,
+                          ),
                           Container(
                             decoration: BoxDecoration(
                               color: Colors.transparent,
@@ -298,7 +297,10 @@ class SignUpScreenState extends State<SignUpScreen> {
                             alignment: Alignment.centerLeft,
                             padding: const EdgeInsets.symmetric(horizontal: 50),
                             child: MaterialButton(
-                              child: Text('${birthDateValue.year.toString()} - ${birthDateValue.month.toString()} - ${birthDateValue.day.toString()}', style: const TextStyle(color: Colors.white),),
+                              child: Text(
+                                '${birthDateValue.year.toString()} - ${birthDateValue.month.toString()} - ${birthDateValue.day.toString()}',
+                                style: const TextStyle(color: Colors.white),
+                              ),
                               onPressed: () async {
                                 final date = await _pickDate();
                                 if (date == null) return; //pressed cancel

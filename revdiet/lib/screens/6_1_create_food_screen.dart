@@ -13,23 +13,26 @@ class CreateFoodScreen extends StatelessWidget {
   final gramsPerServingController = TextEditingController();
 
   //create and add food
-  void _saveFood() {
-    
-  }
+  void _saveFood() {}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 51, 51, 51),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 66, 204, 137),
-        title: const Center(child: Text('Create food')),
+        backgroundColor: const Color.fromARGB(255, 51, 51, 51),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const SizedBox(height: 30),
+              const Text('Create food',
+                  style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(255, 66, 204, 137))),
               const SizedBox(height: 30),
               CustomTileInputFood(
                 controller: descriptionController,

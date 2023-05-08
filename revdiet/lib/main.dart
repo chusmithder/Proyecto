@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:revdiet/screens/4_signup_screen.dart';
 import 'package:revdiet/screens/5_1_home_screen.dart';
 import 'package:revdiet/screens/5_0_home_page.dart';
+import 'package:revdiet/screens/6_0_food_screen.dart';
 import 'firebase_options.dart';
 
 void main(List<String> args) async {

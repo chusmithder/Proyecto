@@ -9,22 +9,20 @@ class HomePage extends StatefulWidget {
 
   // final user = FirebaseAuth.instance.currentUser!;
 
-  
   //calorias totales
-  
-  
 
-  //calorias completadas
+  
 
   @override
   State<StatefulWidget> createState() {
     return HomePageState();
   }
-
 }
 
 class HomePageState extends State<HomePage> {
+  //calorias completadas
   
+
   @override
   void initState() {
     // _loadCurrentUser();
@@ -36,26 +34,24 @@ class HomePageState extends State<HomePage> {
     var usersAuth = db.collection('dtUsers');
 
     var users = await usersAuth.get();
-    
+
     users.docs.forEach((doc) {
       print(doc.data());
     });
 
-
     // var user1 = usersAuth.doc('1');
 
-    
     // user1.get().then(
     //   (DocumentSnapshot doc) {
     //     final data = doc.data() as Map<String, dynamic>;
     //     // ...
     //   },
     //   onError: (e) => print("Error getting document: $e"));
-
   }
 
   int _selectedIndex = 0;
-  static const List<Widget> _screens = <Widget>[
+
+  final List<Widget> _screens = <Widget>[
     HomeScreen(),
     ScaleScreen(),
     UserScreen()
@@ -70,7 +66,13 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Center(child: Text('Hoy', style: TextStyle(fontSize: 15),)),backgroundColor: Color.fromARGB(255, 51, 51, 51)),
+      appBar: AppBar(
+          // title: Center(
+          //     child: Text(
+          //   'Hoy',
+          //   style: TextStyle(fontSize: 15),
+          // )),
+          backgroundColor: Color.fromARGB(255, 51, 51, 51)),
       backgroundColor: const Color.fromARGB(255, 51, 51, 51),
       body: _screens.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
@@ -93,7 +95,7 @@ class HomePageState extends State<HomePage> {
         currentIndex: _selectedIndex,
         selectedItemColor: const Color.fromARGB(255, 66, 204, 137),
         onTap: _onItemTapped,
-      ),  
+      ),
     );
   }
 }
