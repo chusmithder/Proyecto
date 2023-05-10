@@ -27,7 +27,3 @@ class AuthPage extends StatelessWidget {
     );
   }
 }
-
-//ya tienes el usario
-//insertarlo en users
-//

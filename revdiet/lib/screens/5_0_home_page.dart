@@ -1,17 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:revdiet/enums/activity_levels.dart';
+import 'package:revdiet/enums/genders_enum.dart';
+import 'package:revdiet/enums/physical_goals_enum.dart';
+import 'package:revdiet/models/2_user_model.dart';
 import 'package:revdiet/screens/5_1_home_screen.dart';
 import 'package:revdiet/screens/5_2_scale_screen.dart';
 import 'package:revdiet/screens/5_3_user_screen.dart';
+import 'package:revdiet/services/1_logical_service.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
 
-  // final user = FirebaseAuth.instance.currentUser!;
 
-  //calorias totales
-
-  
+  //calorias del usuario
 
   @override
   State<StatefulWidget> createState() {
@@ -20,33 +23,10 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  //calorias completadas
-  
 
   @override
   void initState() {
-    // _loadCurrentUser();
     super.initState();
-  }
-
-  Future<void> _loadCurrentUser() async {
-    var db = FirebaseFirestore.instance;
-    var usersAuth = db.collection('dtUsers');
-
-    var users = await usersAuth.get();
-
-    users.docs.forEach((doc) {
-      print(doc.data());
-    });
-
-    // var user1 = usersAuth.doc('1');
-
-    // user1.get().then(
-    //   (DocumentSnapshot doc) {
-    //     final data = doc.data() as Map<String, dynamic>;
-    //     // ...
-    //   },
-    //   onError: (e) => print("Error getting document: $e"));
   }
 
   int _selectedIndex = 0;
@@ -66,13 +46,7 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          // title: Center(
-          //     child: Text(
-          //   'Hoy',
-          //   style: TextStyle(fontSize: 15),
-          // )),
-          backgroundColor: Color.fromARGB(255, 51, 51, 51)),
+      appBar: AppBar(backgroundColor: Color.fromARGB(255, 51, 51, 51)),
       backgroundColor: const Color.fromARGB(255, 51, 51, 51),
       body: _screens.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(

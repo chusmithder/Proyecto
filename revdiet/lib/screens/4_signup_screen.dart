@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:revdiet/components/1_custom_text_field.dart';
 import 'package:revdiet/components/2_custom_button.dart';
+import 'package:revdiet/models/2_user_model.dart';
 
 class SignUpScreen extends StatefulWidget {
   final Function()? onTap;
@@ -68,13 +70,29 @@ class SignUpScreenState extends State<SignUpScreen> {
       if (allFieldsAreFilled()) {
         if (passwordController.text == passwordConfirmationController.text) {
           //insert into authbase
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          final userAuth =
+              await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: emailController.text,
             password: passwordController.text,
           );
 
           //insert into users collection
-
+          final userModel = UserModel(
+            idUser: userAuth.user!.uid,
+            email: emailController.text,
+            gender: genderValue.toUpperCase(),
+            birthYear: birthDateValue.year,
+            weight: double.parse(weightController.text),
+            height: int.parse(heightController.text),
+            activityLevel: activityLevelValue,
+            physicalGoal: physicalGoalValue,
+          );
+          
+          //insert into collection dtUsers
+          await FirebaseFirestore.instance
+              .collection('dtUsers')
+              .doc(userAuth.user!.uid)
+              .set(userModel.toJson());
         } else {
           showErrorMessage('Passwords do not match!');
         }
