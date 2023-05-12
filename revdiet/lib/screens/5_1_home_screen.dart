@@ -299,7 +299,8 @@ class HomeScreenState extends State<HomeScreen> {
               const SizedBox(width: 20),
               Text(
                 '${macrosToComplet.toString()} g',
-                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
             ],
           ),

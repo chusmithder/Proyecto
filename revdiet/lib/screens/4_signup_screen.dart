@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -76,9 +78,11 @@ class SignUpScreenState extends State<SignUpScreen> {
             password: passwordController.text,
           );
 
+          // await Future.delayed(Duration(seconds: 10));
+
           //insert into users collection
           final userModel = UserModel(
-            idUser: userAuth.user!.uid,
+            // idUser: userAuth.user!.uid,
             email: emailController.text,
             gender: genderValue.toUpperCase(),
             birthYear: birthDateValue.year,
@@ -87,11 +91,11 @@ class SignUpScreenState extends State<SignUpScreen> {
             activityLevel: activityLevelValue,
             physicalGoal: physicalGoalValue,
           );
-          
+
           //insert into collection dtUsers
-          await FirebaseFirestore.instance
+          FirebaseFirestore.instance
               .collection('dtUsers')
-              .doc(userAuth.user!.uid)
+              .doc(userAuth.user?.uid)
               .set(userModel.toJson());
         } else {
           showErrorMessage('Passwords do not match!');
@@ -100,19 +104,17 @@ class SignUpScreenState extends State<SignUpScreen> {
         showErrorMessage('Complete required fields!');
       }
       Navigator.pop(context);
-    } on FirebaseAuthException catch (e) {
+    } catch (e) {
       Navigator.pop(context);
-      showErrorMessage(e.code);
+      showErrorMessage(e.toString());
     }
   }
 
   bool allFieldsAreFilled() {
-    return usernameController.text.isNotEmpty &&
-        emailController.text.isNotEmpty &&
+    return emailController.text.isNotEmpty &&
         passwordController.text.isNotEmpty &&
         heightController.text.isNotEmpty &&
-        weightController.text.isNotEmpty &&
-        residenceCountryController.text.isNotEmpty;
+        weightController.text.isNotEmpty;
   }
 
   void showErrorMessage(String message) {
@@ -363,23 +365,23 @@ class SignUpScreenState extends State<SignUpScreen> {
 
                 const SizedBox(height: 20),
 
-                //desiredWeight
-                Row(
-                  children: [
-                    //residenceCountry
-                    Expanded(
-                      child: CustomTextField(
-                        controller: residenceCountryController,
-                        hintText: 'Residence Country',
-                        obscuredText: false,
-                        icon: Icons.location_city,
-                        inputType: TextInputType.text,
-                      ),
-                    ),
-                  ],
-                ),
+                // //desiredWeight
+                // Row(
+                //   children: [
+                //     //residenceCountry
+                //     Expanded(
+                //       child: CustomTextField(
+                //         controller: residenceCountryController,
+                //         hintText: 'Residence Country',
+                //         obscuredText: false,
+                //         icon: Icons.location_city,
+                //         inputType: TextInputType.text,
+                //       ),
+                //     ),
+                //   ],
+                // ),
 
-                const SizedBox(height: 20),
+                // const SizedBox(height: 20),
 
                 //username textfield
                 Container(
@@ -390,15 +392,15 @@ class SignUpScreenState extends State<SignUpScreen> {
                   ),
                   child: Column(
                     children: [
-                      const SizedBox(height: 20),
+                      // const SizedBox(height: 20),
 
-                      CustomTextField(
-                        controller: usernameController,
-                        hintText: 'Username',
-                        obscuredText: false,
-                        icon: Icons.person,
-                        inputType: TextInputType.text,
-                      ),
+                      // CustomTextField(
+                      //   controller: usernameController,
+                      //   hintText: 'Username',
+                      //   obscuredText: false,
+                      //   icon: Icons.person,
+                      //   inputType: TextInputType.text,
+                      // ),
 
                       const SizedBox(height: 20),
 

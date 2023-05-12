@@ -1,5 +1,7 @@
-class FoodModel {
+//dtUsersFood
+class UserFoodModel {
   // String idFood;
+  String idUser;
   String description;
   int calories; //kcal
   double carbs; //g
@@ -7,8 +9,9 @@ class FoodModel {
   double fats;//g
   double gramsPerServing;//g
 
-  FoodModel({
+  UserFoodModel({
     // required this.idFood,
+    required this.idUser,
     required this.description,
     required this.calories,
     required this.carbs,
@@ -19,6 +22,7 @@ class FoodModel {
 
   Map<String, dynamic> toJson() => {
         // "idFood": idFood,
+        "idUser": idUser,
         "description": description,
         "calories": calories,
         "carbs": carbs,
@@ -27,9 +31,10 @@ class FoodModel {
         "gramsPerServing": gramsPerServing,
       };
 
-  static FoodModel fromJson(Map<String, dynamic> json) {
-    return FoodModel(
+  static UserFoodModel fromJson(Map<String, dynamic> json) {
+    return UserFoodModel(
       // idFood: json['idFood'],
+      idUser: json['idUser'],
       description: json['description'],
       calories: json['calories'],
       carbs: json['carbs'],
