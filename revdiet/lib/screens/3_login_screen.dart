@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:revdiet/components/1_custom_text_field.dart';
 import 'package:revdiet/components/2_custom_button.dart';
+import 'package:revdiet/services/0_general_app_service.dart';
 
 class LogInScreen extends StatefulWidget {
   final Function()? onTap;
@@ -33,22 +34,10 @@ class LogInScreenState extends State<LogInScreen> {
         password: passwordController.text,
       );
       Navigator.pop(context);
-    } on FirebaseAuthException catch (e) {
+    } catch (e) {
       Navigator.pop(context);
-      showErrorMessage(e.code);
+      GeneralAppService.showMessage(e.toString(), Colors.red, context);
     }
-  }
-
-  void showErrorMessage(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          message,
-          style: const TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.red,
-      ),
-    );
   }
 
   @override

@@ -8,13 +8,12 @@ import 'package:revdiet/enums/genders_enum.dart';
 import 'package:revdiet/enums/physical_goals_enum.dart';
 import 'package:revdiet/models/2_user_model.dart';
 import 'package:revdiet/screens/6_0_food_screen.dart';
+import 'package:revdiet/services/0_general_app_service.dart';
 import 'package:revdiet/services/1_logical_service.dart';
+import 'package:revdiet/services/2_database_service.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key});
-
-  //usuario auth actual
-  final userAuth = FirebaseAuth.instance.currentUser!;
+  const HomeScreen({super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -23,7 +22,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  //obtener usuario actual desde el currentuser de Auth
+  //usuario actual
   late UserModel user;
 
   //macronutrientes a completar
@@ -40,21 +39,14 @@ class HomeScreenState extends State<HomeScreen> {
 
   Future<void> _loadUser() async {
     try {
-      String uid = widget.userAuth.uid;
-      final docRef =
-          await FirebaseFirestore.instance.collection("dtUsers").doc(uid);
-      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
-          await docRef.get();
-      final data = documentSnapshot.data() as Map<String, dynamic>;
+      String userId = await DatabaseService.getCurrentUserId();
+      UserModel currentUser = await DatabaseService.getUserById(userId);
       setState(() {
-        user = UserModel.fromJson(data);
+        user = currentUser;
       });
     } on Exception catch (e) {
-      print(e);
+      GeneralAppService.showMessage(e.toString(), Colors.red, context);
     }
-
-    print(user!.toJson());
-    print('................');
   }
 
   Future<void> _loadMacronutriensToComplete() async {
@@ -94,16 +86,14 @@ class HomeScreenState extends State<HomeScreen> {
       activityLevel: activityLevel,
       physicalGoal: physicalGoal,
     );
+    //cargarlos en las variables
     setState(() {
       caloriesToComplete = listCalsMacros[0];
       carbsToComplete = listCalsMacros[1];
       proteinsToComplete = listCalsMacros[2];
       fatsToComplete = listCalsMacros[3];
     });
-    //cargarlos en las variables
-
-    print(listCalsMacros);
-    print('................');
+    
   }
 
   Future<void> _loadCompletedMacronutriens() async {
@@ -128,10 +118,6 @@ class HomeScreenState extends State<HomeScreen> {
   void initState() {
     _loadInitialData();
     super.initState();
-  }
-
-  void _logout() {
-    FirebaseAuth.instance.signOut();
   }
 
   Future<void> _goToFoodScreen() async {

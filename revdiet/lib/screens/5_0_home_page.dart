@@ -1,20 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:revdiet/enums/activity_levels.dart';
-import 'package:revdiet/enums/genders_enum.dart';
-import 'package:revdiet/enums/physical_goals_enum.dart';
-import 'package:revdiet/models/2_user_model.dart';
 import 'package:revdiet/screens/5_1_home_screen.dart';
 import 'package:revdiet/screens/5_2_scale_screen.dart';
 import 'package:revdiet/screens/5_3_user_screen.dart';
-import 'package:revdiet/services/1_logical_service.dart';
-
 class HomePage extends StatefulWidget {
-  HomePage({super.key});
-
-
-  //calorias del usuario
+  const HomePage({super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -33,8 +22,8 @@ class HomePageState extends State<HomePage> {
 
   final List<Widget> _screens = <Widget>[
     HomeScreen(),
-    ScaleScreen(),
-    UserScreen()
+    const ScaleScreen(),
+    const UserScreen()
   ];
 
   void _onItemTapped(int index) {

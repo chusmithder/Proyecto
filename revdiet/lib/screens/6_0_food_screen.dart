@@ -6,6 +6,7 @@ import 'package:revdiet/components/2_custom_button.dart';
 import 'package:revdiet/models/3_food_model.dart';
 import 'package:revdiet/models/4_user_food_model.dart';
 import 'package:revdiet/screens/6_1_create_food_screen.dart';
+import 'package:revdiet/services/0_general_app_service.dart';
 
 class FoodScreen extends StatefulWidget {
   const FoodScreen({super.key});
@@ -19,7 +20,7 @@ class _FoodScreenState extends State<FoodScreen> {
   
   final _userFood = <UserFoodModel>[];
 
-  //cargar documentos de msFood
+  //cargar documentos de msFood en _addFood
   Future<void> _loadAppFood() async {
     _appFood.clear(); //borrar memoria
     var foodToAdd = <FoodModel>[];
@@ -33,11 +34,11 @@ class _FoodScreenState extends State<FoodScreen> {
         _appFood.addAll(foodToAdd);
       });
     } catch (e) {
-      showErrorMessage(e.toString());
+      GeneralAppService.showMessage(e.toString(), Colors.red, context);
     }
   }
 
-  //cargar documentos de dtUserFood
+  //cargar documentos de dtUserFood en _userFood
   Future<void> _loadUserFood() async {
     _userFood.clear(); //borrar memoria
     var foodToAdd = <UserFoodModel>[];
@@ -56,45 +57,24 @@ class _FoodScreenState extends State<FoodScreen> {
         _userFood.addAll(foodToAdd);
       });
     } catch (e) {
-      showErrorMessage(e.toString());
+      GeneralAppService.showMessage(e.toString(), Colors.red, context);
     }
   }
 
-  void showErrorMessage(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          message,
-          style: const TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.red,
-      ),
-    );
-  }
-
-  //created food list
-  Future<void> _createFood() async {
+  //ir a CreateFoodScreen
+  Future<void> _goToCreateFoodScreen() async {
     await Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (_) => CreateFoodScreen(),
+        builder: (_) => const CreateFoodScreen(),
       ),
     );
-
-    // FoodModel food = FoodModel(
-    //     description: 'ham steak',
-    //     calories: 70,
-    //     carbs: 0,
-    //     proteins: 11.1,
-    //     fats: 2.4,
-    //     gramsPerServing: 57);
-
-    // await FirebaseFirestore.instance
-    //     .collection('msFood')
-    //     .doc()
-    //     .set(food.toJson());
+    _loadinitialData();
   }
 
-  void _addFood() {}
+  //añadir a los macronutrientes consumidos los valores de la comida seleccionada
+  void _addFood() {
+
+  }
 
   Future<void> _loadinitialData() async {
     await _loadAppFood();
@@ -130,7 +110,7 @@ class _FoodScreenState extends State<FoodScreen> {
               _foodListWidget(_userFood),
               const SizedBox(height: 20),
               CustomButton(
-                onTap: _createFood,
+                onTap: _goToCreateFoodScreen,
                 buttonText: 'Create custom food',
               ),
             ],

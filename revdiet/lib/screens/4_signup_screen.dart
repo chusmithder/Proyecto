@@ -1,11 +1,10 @@
-import 'dart:html';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:revdiet/components/1_custom_text_field.dart';
 import 'package:revdiet/components/2_custom_button.dart';
 import 'package:revdiet/models/2_user_model.dart';
+import 'package:revdiet/services/0_general_app_service.dart';
 
 class SignUpScreen extends StatefulWidget {
   final Function()? onTap;
@@ -78,8 +77,6 @@ class SignUpScreenState extends State<SignUpScreen> {
             password: passwordController.text,
           );
 
-          // await Future.delayed(Duration(seconds: 10));
-
           //insert into users collection
           final userModel = UserModel(
             // idUser: userAuth.user!.uid,
@@ -97,16 +94,24 @@ class SignUpScreenState extends State<SignUpScreen> {
               .collection('dtUsers')
               .doc(userAuth.user?.uid)
               .set(userModel.toJson());
+          
+          // ignore: use_build_context_synchronously
+          GeneralAppService.showMessage(
+              'User created successfully!', Colors.green, context);
+
         } else {
-          showErrorMessage('Passwords do not match!');
+          GeneralAppService.showMessage(
+              'Passwords do not match!', Colors.red, context);
         }
       } else {
-        showErrorMessage('Complete required fields!');
+        GeneralAppService.showMessage(
+            'Complete required fields!', Colors.red, context);
       }
+      // ignore: use_build_context_synchronously
       Navigator.pop(context);
     } catch (e) {
       Navigator.pop(context);
-      showErrorMessage(e.toString());
+      GeneralAppService.showMessage(e.toString(), Colors.red, context);
     }
   }
 
@@ -115,18 +120,6 @@ class SignUpScreenState extends State<SignUpScreen> {
         passwordController.text.isNotEmpty &&
         heightController.text.isNotEmpty &&
         weightController.text.isNotEmpty;
-  }
-
-  void showErrorMessage(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          message,
-          style: const TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.red,
-      ),
-    );
   }
 
   Future<DateTime?> _pickDate() {

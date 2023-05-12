@@ -1,13 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:revdiet/components/2_custom_button.dart';
 import 'package:revdiet/components/3_custom_tile_input_food.dart';
 import 'package:revdiet/models/2_user_model.dart';
 import 'package:revdiet/models/4_user_food_model.dart';
+import 'package:revdiet/services/0_general_app_service.dart';
+import 'package:revdiet/services/2_database_service.dart';
 
 class CreateFoodScreen extends StatefulWidget {
-  CreateFoodScreen({super.key});
+  const CreateFoodScreen({super.key});
 
   @override
   State<CreateFoodScreen> createState() => _CreateFoodScreenState();
@@ -26,50 +26,59 @@ class _CreateFoodScreenState extends State<CreateFoodScreen> {
     try {
       if (_allFieldsCompleted() && _checkFieldsType()) {
         //obtener id usuario actual FireAuth
-        String uid = FirebaseAuth.instance.currentUser!.uid;
+        String userId = DatabaseService.getCurrentUserId();
 
         //insertar en dtUsersFood
-        UserFoodModel food = UserFoodModel(
-            idUser: uid,
-            description: descriptionController.text,
-            calories: int.parse(caloriesController.text),
-            carbs: double.parse(carbsController.text),
-            proteins: double.parse(proteinsController.text),
-            fats: double.parse(fatsController.text),
-            gramsPerServing: double.parse(gramsPerServingController.text));
-        
-        await FirebaseFirestore.instance
-            .collection('dtUsersFood')
-            .add(food.toJson());
+        UserFoodModel food = _createFoodFromFields(userId);
+        await DatabaseService.insertFoodInDtUsersFood(food);
 
-        //obtener lista de comidas con id del usario
-        List<String> listUserIdsFood = <String>[];
+        //obtener lista del usuario
+        List<String> listUserIdsFood =
+            await DatabaseService.getListIdsFoodByUserId(userId);
 
-        QuerySnapshot<Map<String, dynamic>> queryUserFood =
-            await FirebaseFirestore.instance.collection('dtUsersFood').where('idUser', isEqualTo: uid).get();
-        for (var doc in queryUserFood.docs) {
-          //insertar id de la comida
-          listUserIdsFood.add(doc.id);
-        }
         //cambiar propiedad del usuario
-        final userRef = await FirebaseFirestore.instance.collection('dtUsers').doc(uid).get();
-        UserModel user = UserModel.fromJson(userRef.data() as Map<String, dynamic>);
+        UserModel user = await DatabaseService.getUserById(userId);
         user.idsUserFood = listUserIdsFood;
 
         //actualizar idsUserFood de usuario en la bd
-        await FirebaseFirestore.instance.collection('dtUsers').doc(uid).set(user.toJson());
+        await DatabaseService.updateUserByUserIdAndModel(userId, user);
 
+        _restartFieldValues();
+        // ignore: use_build_context_synchronously
+        GeneralAppService.showMessage(
+            'Food created successfully', Colors.green, context);
       } else {
-        showErrorMessage(_allFieldsCompleted()
+        String errorMessage = _allFieldsCompleted()
             ? 'The types of the fields are not the correct'
-            : 'Fill all the fields');
+            : 'Fill all the fields';
+        GeneralAppService.showMessage(errorMessage, Colors.red, context);
       }
     } catch (e) {
-      showErrorMessage(e.toString());
+      GeneralAppService.showMessage(e.toString(), Colors.red, context);
     }
   }
 
-  //check all fields are complete
+  UserFoodModel _createFoodFromFields(String uid) {
+    UserFoodModel food = UserFoodModel(
+        idUser: uid,
+        description: descriptionController.text,
+        calories: int.parse(caloriesController.text),
+        carbs: double.parse(carbsController.text),
+        proteins: double.parse(proteinsController.text),
+        fats: double.parse(fatsController.text),
+        gramsPerServing: double.parse(gramsPerServingController.text));
+    return food;
+  }
+
+  void _restartFieldValues() {
+    descriptionController.text = '';
+    caloriesController.text = '';
+    carbsController.text = '';
+    proteinsController.text = '';
+    fatsController.text = '';
+    gramsPerServingController.text = '';
+  }
+
   bool _allFieldsCompleted() {
     return descriptionController.text.isNotEmpty &&
         caloriesController.text.isNotEmpty &&
@@ -79,20 +88,10 @@ class _CreateFoodScreenState extends State<CreateFoodScreen> {
         gramsPerServingController.text.isNotEmpty;
   }
 
+  
   bool _checkFieldsType() {
+    //TODO
     return true;
-  }
-
-  void showErrorMessage(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          message,
-          style: const TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.red,
-      ),
-    );
   }
 
   @override
