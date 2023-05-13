@@ -295,12 +295,12 @@ class HomeScreenState extends State<HomeScreen> {
                   fontSize: 15,
                 ),
               ),
-              const SizedBox(width: 20),
+              const SizedBox(width: 5),
               const Text(
                 '/',
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
-              const SizedBox(width: 20),
+              const SizedBox(width: 5),
               Text(
                 '${macrosToComplet.toString()} g',
                 style:
