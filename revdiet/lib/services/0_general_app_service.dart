@@ -14,4 +14,11 @@ class GeneralAppService {
       ),
     );
   }
+
+  static bool isHourToRestart() {
+    DateTime now = DateTime.now();
+    print(TimeOfDay.now());
+
+    return true;
+  }
 }

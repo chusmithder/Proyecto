@@ -9,7 +9,7 @@ class DatabaseService {
   }
   
   static Future<UserModel> getUserById(String userId) async {
-    final docRef = FirebaseFirestore.instance.collection("dtUsers").doc(userId);
+    final docRef = await FirebaseFirestore.instance.collection("dtUsers").doc(userId);
     DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
         await docRef.get();
     final data = documentSnapshot.data() as Map<String, dynamic>;

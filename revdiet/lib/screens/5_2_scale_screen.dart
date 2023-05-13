@@ -10,6 +10,6 @@ class ScaleScreen extends StatefulWidget {
 class _ScaleScreenState extends State<ScaleScreen> {
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('scale screen'),);
+    return const Center(child: Text('scale screen'),);
   }
 }

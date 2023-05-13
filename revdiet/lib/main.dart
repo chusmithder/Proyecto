@@ -1,14 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:revdiet/screens/1_auth_page.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 
-void restartCompletedValues() {
+Future<void> restartCompletedValues() async {
+  if (DateTime.now().hour == DateTime(100).hour) {}
+  //ver si la hora
 
+  //if son las 23:59 reiniciamos
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  preferences.setInt('completedCalories', 0);
+  preferences.setDouble('completedCarbs', 0);
+  preferences.setDouble('completedProteins', 0);
+  preferences.setDouble('completedFats', 0);
 }
+
 void main(List<String> args) async {
-  restartCompletedValues();
-  
+  await restartCompletedValues();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -20,13 +30,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        backgroundColor: const Color.fromARGB(255, 51, 51, 51),
-      ),
-      home: AuthPage()
-    );
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          backgroundColor: const Color.fromARGB(255, 51, 51, 51),
+        ),
+        home: AuthPage());
   }
 }

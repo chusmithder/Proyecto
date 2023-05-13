@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:revdiet/components/2_custom_button.dart';
 import 'package:revdiet/models/3_food_model.dart';
 import 'package:revdiet/models/4_user_food_model.dart';
 import 'package:revdiet/screens/6_1_create_food_screen.dart';
 import 'package:revdiet/services/0_general_app_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FoodScreen extends StatefulWidget {
   const FoodScreen({super.key});
@@ -17,7 +17,7 @@ class FoodScreen extends StatefulWidget {
 
 class _FoodScreenState extends State<FoodScreen> {
   final _appFood = <FoodModel>[];
-  
+
   final _userFood = <UserFoodModel>[];
 
   //cargar documentos de msFood en _addFood
@@ -72,13 +72,44 @@ class _FoodScreenState extends State<FoodScreen> {
   }
 
   //añadir a los macronutrientes consumidos los valores de la comida seleccionada
-  void _addFood() {
+  Future<void> _addFood(dynamic food) async {
+    try {
+      int calories;
+      double carbs;
+      double proteins;
+      double fats;
+      if (food is FoodModel) {
+        calories = food.calories;
+        carbs = food.carbs;
+        proteins = food.proteins;
+        fats = food.fats;
+      } else {
+        calories = food.calories;
+        carbs = food.carbs;
+        proteins = food.proteins;
+        fats = food.fats;
+      }
+      //cambiar los macronutrientes completados
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      preferences.setInt('completedCalories',
+          preferences.getInt('completedCalories')! + calories);
+      preferences.setDouble(
+          'completedCarbs', preferences.getDouble('completedCarbs')! + carbs);
+      preferences.setDouble('completedProteins',
+          preferences.getDouble('completedProteins')! + proteins);
+      preferences.setDouble(
+          'completedFats', preferences.getDouble('completedFats')! + fats);
 
+      // ignore: use_build_context_synchronously
+      GeneralAppService.showMessage('Successfully added!', Colors.green, context);
+    } catch (e) {
+      GeneralAppService.showMessage(e.toString(), Colors.red, context);
+    }
   }
 
   Future<void> _loadinitialData() async {
     await _loadAppFood();
-    await _loadUserFood();  
+    await _loadUserFood();
   }
 
   @override
@@ -171,7 +202,9 @@ class _FoodScreenState extends State<FoodScreen> {
       ),
       child: ListTile(
         leading: GestureDetector(
-          onTap: _addFood,
+          onTap: () async {
+            await _addFood(food);
+          },
           child: const Icon(
             Icons.add,
             color: Color.fromARGB(255, 66, 204, 137),

@@ -46,7 +46,7 @@ class _CreateFoodScreenState extends State<CreateFoodScreen> {
         _restartFieldValues();
         // ignore: use_build_context_synchronously
         GeneralAppService.showMessage(
-            'Food created successfully', Colors.green, context);
+            'Food created successfully!', Colors.green, context);
       } else {
         String errorMessage = _allFieldsCompleted()
             ? 'The types of the fields are not the correct'

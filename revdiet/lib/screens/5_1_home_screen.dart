@@ -1,7 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:revdiet/components/1_custom_text_field.dart';
 import 'package:revdiet/components/2_custom_button.dart';
 import 'package:revdiet/enums/activity_levels.dart';
 import 'package:revdiet/enums/genders_enum.dart';
@@ -11,6 +8,7 @@ import 'package:revdiet/screens/6_0_food_screen.dart';
 import 'package:revdiet/services/0_general_app_service.dart';
 import 'package:revdiet/services/1_logical_service.dart';
 import 'package:revdiet/services/2_database_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -26,16 +24,16 @@ class HomeScreenState extends State<HomeScreen> {
   late UserModel user;
 
   //macronutrientes a completar
-  late int caloriesToComplete = 0;
-  late int carbsToComplete = 0;
-  late int proteinsToComplete = 0;
-  late int fatsToComplete = 0;
+  int caloriesToComplete = 0;
+  int carbsToComplete = 0;
+  int proteinsToComplete = 0;
+  int fatsToComplete = 0;
 
   //calorias completadas
-  late final int completedCalories;
-  late final int completedCarbs;
-  late final int completedProteins;
-  late final int completedFats;
+  int completedCalories = 0;
+  double completedCarbs = 0;
+  double completedProteins = 0;
+  double completedFats = 0;
 
   Future<void> _loadUser() async {
     try {
@@ -93,18 +91,18 @@ class HomeScreenState extends State<HomeScreen> {
       proteinsToComplete = listCalsMacros[2];
       fatsToComplete = listCalsMacros[3];
     });
-    
   }
 
   Future<void> _loadCompletedMacronutriens() async {
     //reiniciarlos cada dia
     //obtener el valor
     //persistencia de datos
+    SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
-      completedCalories = 0;
-      completedCarbs = 0;
-      completedProteins = 0;
-      completedFats = 0;
+      completedCalories = preferences.getInt('completedCalories')!;
+      completedCarbs = preferences.getDouble('completedCarbs')!;
+      completedProteins = preferences.getDouble('completedProteins')!;
+      completedFats = preferences.getDouble('completedFats')!;
     });
   }
 
@@ -121,12 +119,31 @@ class HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _goToFoodScreen() async {
-    //await
     await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => FoodScreen(),
       ),
     );
+
+
+    //recargar valores al volver
+    try {
+      await _loadInitialData();
+    } catch (e) {
+      print(e.toString());
+    }
+    
+    print('---------------------------');
+    print('---------------------------');
+    print('---------------------------');
+    // await _loadCompletedMacronutriens();
+    // //reiniciar a las 23:59
+    // TimeOfDay restarHour = const TimeOfDay(hour: 23, minute: 59);
+    // TimeOfDay currentHour = TimeOfDay.now();
+
+    // restarHour.hour + (restarHour.minute / 60.0);
+    // currentHour.hour + (currentHour.minute / 60.0);
+    //TODO load
   }
 
   @override
@@ -242,18 +259,18 @@ class HomeScreenState extends State<HomeScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          carbsWidget('Carbs', completedCarbs, carbsToComplete),
+          macroWidget('Carbs', completedCarbs, carbsToComplete),
           const SizedBox(width: 15),
-          carbsWidget('Proteins', completedProteins, proteinsToComplete),
+          macroWidget('Proteins', completedProteins, proteinsToComplete),
           const SizedBox(width: 15),
-          carbsWidget('Fats', completedFats, fatsToComplete),
+          macroWidget('Fats', completedFats, fatsToComplete),
         ],
       ),
     );
   }
 
-  Widget carbsWidget(
-      String macroName, int completedMacros, int macrosToComplet) {
+  Widget macroWidget(
+      String macroName, double completedMacros, int macrosToComplet) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
       decoration: BoxDecoration(
@@ -271,11 +288,12 @@ class HomeScreenState extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                completedMacros.toString(),
+                completedMacros.toStringAsFixed(
+                    completedMacros.truncate() == completedMacros ? 0 : 2),
                 style: const TextStyle(
-                    color: Color.fromARGB(255, 66, 204, 137),
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold),
+                  color: Color.fromARGB(255, 66, 204, 137),
+                  fontSize: 15,
+                ),
               ),
               const SizedBox(width: 20),
               const Text(

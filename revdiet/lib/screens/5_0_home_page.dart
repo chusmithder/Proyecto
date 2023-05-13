@@ -38,7 +38,7 @@ class HomePageState extends State<HomePage> {
       appBar: AppBar(backgroundColor: Color.fromARGB(255, 51, 51, 51)),
       backgroundColor: const Color.fromARGB(255, 51, 51, 51),
       body: _screens.elementAt(_selectedIndex),
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: BottomNavigationBar( 
         backgroundColor: const Color.fromARGB(255, 28, 28, 28),
         unselectedItemColor: Colors.white,
         items: const <BottomNavigationBarItem>[
