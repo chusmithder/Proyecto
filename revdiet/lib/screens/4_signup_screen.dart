@@ -5,6 +5,7 @@ import 'package:revdiet/components/1_custom_text_field.dart';
 import 'package:revdiet/components/2_custom_button.dart';
 import 'package:revdiet/models/2_user_model.dart';
 import 'package:revdiet/services/0_general_app_service.dart';
+import 'package:revdiet/services/2_database_service.dart';
 
 class SignUpScreen extends StatefulWidget {
   final Function()? onTap;
@@ -79,7 +80,7 @@ class SignUpScreenState extends State<SignUpScreen> {
 
           //insert into users collection
           final userModel = UserModel(
-            // idUser: userAuth.user!.uid,
+            idUser: userAuth.user!.uid,
             email: emailController.text,
             gender: genderValue.toUpperCase(),
             birthYear: birthDateValue.year,
@@ -90,10 +91,7 @@ class SignUpScreenState extends State<SignUpScreen> {
           );
 
           //insert into collection dtUsers
-          FirebaseFirestore.instance
-              .collection('dtUsers')
-              .doc(userAuth.user?.uid)
-              .set(userModel.toJson());
+          DatabaseService.insertUserInDtUsersByIdAndModel(userAuth.user!.uid, userModel);
           
           // ignore: use_build_context_synchronously
           GeneralAppService.showMessage(

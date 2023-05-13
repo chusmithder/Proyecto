@@ -36,7 +36,7 @@ class CustomTileInputFood extends StatelessWidget {
             child: TextField(
               controller: controller,
               keyboardType: inputType,
-              style: const TextStyle(fontSize: 14, color: Colors.grey),
+              style: const TextStyle(fontSize: 14, color: Color.fromARGB(255, 66, 204, 137)),
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderSide: const BorderSide(color: Colors.transparent),

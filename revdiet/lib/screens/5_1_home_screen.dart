@@ -4,6 +4,7 @@ import 'package:revdiet/enums/activity_levels.dart';
 import 'package:revdiet/enums/genders_enum.dart';
 import 'package:revdiet/enums/physical_goals_enum.dart';
 import 'package:revdiet/models/2_user_model.dart';
+import 'package:revdiet/models/3_food_model.dart';
 import 'package:revdiet/screens/6_0_food_screen.dart';
 import 'package:revdiet/services/0_general_app_service.dart';
 import 'package:revdiet/services/1_logical_service.dart';
@@ -21,7 +22,7 @@ class HomeScreen extends StatefulWidget {
 
 class HomeScreenState extends State<HomeScreen> {
   //usuario actual
-  late UserModel user;
+  UserModel? user;
 
   //macronutrientes a completar
   int caloriesToComplete = 0;
@@ -49,12 +50,12 @@ class HomeScreenState extends State<HomeScreen> {
 
   Future<void> _loadMacronutriensToComplete() async {
     Genders gender;
-    user.gender.toUpperCase() == 'MALE'
+    user?.gender.toUpperCase() == 'MALE'
         ? gender = Genders.male
         : gender = Genders.female;
     //actvity
     ActivityLevels activityLevel = ActivityLevels.VeryActive;
-    switch (user.activityLevel) {
+    switch (user!.activityLevel) {
       case 'Not very active':
         activityLevel = ActivityLevels.NotVeryActive;
         break;
@@ -67,7 +68,7 @@ class HomeScreenState extends State<HomeScreen> {
     }
 
     PhysicalGoals physicalGoal = PhysicalGoals.Gain;
-    switch (user.physicalGoal) {
+    switch (user!.physicalGoal) {
       case 'Lose weight':
         physicalGoal = PhysicalGoals.Lose;
         break;
@@ -78,9 +79,9 @@ class HomeScreenState extends State<HomeScreen> {
 
     var listCalsMacros = LogicalService.calculateCaloriesCarbsProteinsFats(
       gender: gender,
-      weight: user.weight,
-      height: user.height,
-      age: DateTime.now().year - user.birthYear,
+      weight: user!.weight,
+      height: user!.height,
+      age: DateTime.now().year - user!.birthYear,
       activityLevel: activityLevel,
       physicalGoal: physicalGoal,
     );
@@ -125,25 +126,7 @@ class HomeScreenState extends State<HomeScreen> {
       ),
     );
 
-
-    //recargar valores al volver
-    try {
-      await _loadInitialData();
-    } catch (e) {
-      print(e.toString());
-    }
-    
-    print('---------------------------');
-    print('---------------------------');
-    print('---------------------------');
-    // await _loadCompletedMacronutriens();
-    // //reiniciar a las 23:59
-    // TimeOfDay restarHour = const TimeOfDay(hour: 23, minute: 59);
-    // TimeOfDay currentHour = TimeOfDay.now();
-
-    // restarHour.hour + (restarHour.minute / 60.0);
-    // currentHour.hour + (currentHour.minute / 60.0);
-    //TODO load
+    _loadInitialData();
   }
 
   @override

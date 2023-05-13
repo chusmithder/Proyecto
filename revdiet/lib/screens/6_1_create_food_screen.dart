@@ -34,7 +34,7 @@ class _CreateFoodScreenState extends State<CreateFoodScreen> {
 
         //obtener lista del usuario
         List<String> listUserIdsFood =
-            await DatabaseService.getListIdsFoodByUserId(userId);
+            await DatabaseService.getListIdsFoodByUserIdFomDtUsersFood(userId);
 
         //cambiar propiedad del usuario
         UserModel user = await DatabaseService.getUserById(userId);

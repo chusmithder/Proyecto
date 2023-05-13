@@ -6,6 +6,7 @@ import 'package:revdiet/models/3_food_model.dart';
 import 'package:revdiet/models/4_user_food_model.dart';
 import 'package:revdiet/screens/6_1_create_food_screen.dart';
 import 'package:revdiet/services/0_general_app_service.dart';
+import 'package:revdiet/services/2_database_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FoodScreen extends StatefulWidget {
@@ -23,13 +24,8 @@ class _FoodScreenState extends State<FoodScreen> {
   //cargar documentos de msFood en _addFood
   Future<void> _loadAppFood() async {
     _appFood.clear(); //borrar memoria
-    var foodToAdd = <FoodModel>[];
     try {
-      QuerySnapshot<Map<String, dynamic>> queryFood =
-          await FirebaseFirestore.instance.collection('msFood').get();
-      for (var doc in queryFood.docs) {
-        foodToAdd.add(FoodModel.fromJson(doc.data()));
-      }
+      List<FoodModel> foodToAdd =  await DatabaseService.getListFoodFromMsFood();
       setState(() {
         _appFood.addAll(foodToAdd);
       });
@@ -40,19 +36,10 @@ class _FoodScreenState extends State<FoodScreen> {
 
   //cargar documentos de dtUserFood en _userFood
   Future<void> _loadUserFood() async {
-    _userFood.clear(); //borrar memoria
-    var foodToAdd = <UserFoodModel>[];
+    _userFood.clear(); //limpiar memoria
     try {
-      String uid = FirebaseAuth.instance.currentUser!.uid;
-      QuerySnapshot<Map<String, dynamic>> queryUserFood =
-          await FirebaseFirestore.instance
-              .collection('dtUsersFood')
-              .where('idUser', isEqualTo: uid)
-              .get();
-      for (var doc in queryUserFood.docs) {
-        //insertar id de la comida
-        foodToAdd.add(UserFoodModel.fromJson(doc.data()));
-      }
+      String uid = DatabaseService.getCurrentUserId();
+      List<UserFoodModel> foodToAdd = await DatabaseService.getListUserFoodByUserIdFromDtUsersFood(uid);
       setState(() {
         _userFood.addAll(foodToAdd);
       });
@@ -132,11 +119,11 @@ class _FoodScreenState extends State<FoodScreen> {
               const SizedBox(height: 15),
               _titleWidget(),
               const SizedBox(height: 30),
-              _titleDescriptionWidget('Select app foods'),
+              _titleDescriptionWidget('Select app food'),
               const SizedBox(height: 15),
               _foodListWidget(_appFood),
               const SizedBox(height: 30),
-              _titleDescriptionWidget('Select your created foods'),
+              _titleDescriptionWidget('Select your created food'),
               const SizedBox(height: 15),
               _foodListWidget(_userFood),
               const SizedBox(height: 20),
