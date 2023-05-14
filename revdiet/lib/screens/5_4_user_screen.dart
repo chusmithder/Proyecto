@@ -16,7 +16,7 @@ void _logout() {
   FirebaseAuth.instance.signOut();
 }
 
-class _UserScreenState extends State<UserScreen> {
+  class _UserScreenState extends State<UserScreen> {
   //usuario actual
   UserModel? user;
 

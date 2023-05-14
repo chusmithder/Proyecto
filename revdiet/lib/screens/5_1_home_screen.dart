@@ -177,55 +177,60 @@ class HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const SizedBox(height: 20),
-            const Text(
-              'Calories',
-              style: TextStyle(color: Colors.white, fontSize: 18),
-            ),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  completedCalories.toString(),
-                  style: const TextStyle(
-                      color: Color.fromARGB(255, 66, 204, 137),
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(width: 20),
-                const Text(
-                  '/',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(width: 20),
-                Text(
-                  caloriesToComplete.toString(),
-                  style: const TextStyle(
-                      fontSize: 15, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  height: 10,
-                  width: 200,
-                  decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 66, 204, 137),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                Container(
-                  height: 10,
-                  width: 100,
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                )
-              ],
+            // const Text(
+            //   'Calories',
+            //   style: TextStyle(color: Colors.white, fontSize: 18),
+            // ),
+            // const SizedBox(height: 10),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     Text(
+            //       completedCalories.toString(),
+            //       style: const TextStyle(
+            //           color: Color.fromARGB(255, 66, 204, 137),
+            //           fontSize: 15,
+            //           fontWeight: FontWeight.bold),
+            //     ),
+            //     const SizedBox(width: 20),
+            //     const Text(
+            //       '/',
+            //       style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            //     ),
+            //     const SizedBox(width: 20),
+            //     Text(
+            //       caloriesToComplete.toString(),
+            //       style: const TextStyle(
+            //           fontSize: 15, fontWeight: FontWeight.bold),
+            //     ),
+            //   ],
+            // ),
+            // const SizedBox(height: 10),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     Container(
+            //       height: 10,
+            //       width: 200,
+            //       decoration: BoxDecoration(
+            //         color: Color.fromARGB(255, 66, 204, 137),
+            //         borderRadius: BorderRadius.circular(8),
+            //       ),
+            //     ),
+            //     Container(
+            //       height: 10,
+            //       width: 100,
+            //       decoration: BoxDecoration(
+            //         color: Colors.black,
+            //         borderRadius: BorderRadius.circular(8),
+            //       ),
+            //     )
+            //   ],
+            // ),
+            // const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 50),
+              child: macroWidget('Calories', completedCalories as double, caloriesToComplete),
             ),
             const SizedBox(height: 20),
             macrosWidget(),
