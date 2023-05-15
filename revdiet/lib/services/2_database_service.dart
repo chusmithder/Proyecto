@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:revdiet/models/2_user_model.dart';
 import 'package:revdiet/models/3_food_model.dart';
 import 'package:revdiet/models/4_user_food_model.dart';
@@ -90,7 +91,7 @@ class DatabaseService {
         await FirebaseFirestore.instance
             .collection('dtUsersWeights')
             .where('idUser', isEqualTo: userId)
-            // .orderBy('date')
+            .orderBy('date', descending: true)
             .get();
     for (var doc in queryUserFood.docs) {
       //insertar id de la comida
@@ -141,3 +142,4 @@ class DatabaseService {
 
   //   await DatabaseService.insertFoodInMsFood(food);
 }
+

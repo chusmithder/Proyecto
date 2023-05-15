@@ -120,7 +120,7 @@ class _ScaleScreenState extends State<ScaleScreen> {
               fontWeight: FontWeight.bold, fontSize: 15, color: Colors.white),
         ),
         subtitle: Text(
-          DateTime.fromMillisecondsSinceEpoch(weight.date.seconds * 1000).toString(),
+          _getFormatDate(DateTime.fromMillisecondsSinceEpoch(weight.date.seconds * 1000)),
           style: const TextStyle(
             fontSize: 12.0,
             color: Color.fromARGB(255, 66, 204, 137),
@@ -128,6 +128,10 @@ class _ScaleScreenState extends State<ScaleScreen> {
         ),
       ),
     );
+  }
+
+  String _getFormatDate(DateTime date)  {
+    return '${date.year.toString()}/${date.month.toString()}/${date.day.toString()} ${date.hour.toString()}: ${date.minute.toString()}';
   }
 
   Widget _titleDescriptionWidget(String text) {

@@ -48,7 +48,7 @@ class HomePageState extends State<HomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.scale),
-            label: 'Scale',
+            label: 'Weights',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
