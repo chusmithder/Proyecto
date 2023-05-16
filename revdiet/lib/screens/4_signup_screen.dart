@@ -69,7 +69,7 @@ class SignUpScreenState extends State<SignUpScreen> {
     );
 
     try {
-      if (allFieldsAreFilled()) {
+      if (allFieldsAreFilled() & allValuesAreValid()) {
         if (passwordController.text == passwordConfirmationController.text) {
           //insert into authbase
           final userAuth =
@@ -118,6 +118,10 @@ class SignUpScreenState extends State<SignUpScreen> {
         passwordController.text.isNotEmpty &&
         heightController.text.isNotEmpty &&
         weightController.text.isNotEmpty;
+  }
+
+  bool allValuesAreValid() {
+    return true;
   }
 
   Future<DateTime?> _pickDate() {

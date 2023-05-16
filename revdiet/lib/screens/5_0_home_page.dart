@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:revdiet/screens/5_1_home_screen.dart';
 import 'package:revdiet/screens/5_2_weights_screen.dart';
-import 'package:revdiet/screens/5_4_user_screen.dart';
+import 'package:revdiet/screens/5_3_user_screen.dart';
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -21,8 +21,8 @@ class HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = <Widget>[
-    HomeScreen(),
-    const ScaleScreen(),
+    const HomeScreen(),
+    const WeightsScreen(),
     const UserScreen()
   ];
 

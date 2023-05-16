@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:revdiet/components/2_custom_button.dart';
 import 'package:revdiet/models/4_user_weights_model.dart';
-import 'package:revdiet/screens/5_2_register_weight_screen.dart';
+import 'package:revdiet/screens/5_2_1_register_weight_screen.dart';
 import 'package:revdiet/services/0_general_app_service.dart';
 import 'package:revdiet/services/2_database_service.dart';
 
-class ScaleScreen extends StatefulWidget {
-  const ScaleScreen({super.key});
+class WeightsScreen extends StatefulWidget {
+  const WeightsScreen({super.key});
 
   @override
-  State<ScaleScreen> createState() => _ScaleScreenState();
+  State<WeightsScreen> createState() => _WeightsScreenState();
 }
 
-class _ScaleScreenState extends State<ScaleScreen> {
+class _WeightsScreenState extends State<WeightsScreen> {
   final _userWeights = <UserWeightsModel>[];
 
   //cargar documentos de dtUsersWeights con id del usuario en _userWeights
