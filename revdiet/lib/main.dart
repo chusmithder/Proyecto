@@ -1,23 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:revdiet/screens/1_auth_page.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:revdiet/services/0_general_app_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 
-Future<void> restartCompletedValues() async {
-  if (DateTime.now().hour == DateTime(100).hour) {}
-  //ver si la hora
 
-  //if son las 23:59 reiniciamos
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  preferences.setInt('completedCalories', 0);
-  preferences.setDouble('completedCarbs', 0);
-  preferences.setDouble('completedProteins', 0);
-  preferences.setDouble('completedFats', 0);
-}
 
 void main(List<String> args) async {
-  await restartCompletedValues();
+  await GeneralAppService.restartCompletedValues();
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

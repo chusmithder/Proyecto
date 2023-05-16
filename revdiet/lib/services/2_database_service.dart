@@ -1,18 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:revdiet/models/2_user_model.dart';
 import 'package:revdiet/models/3_food_model.dart';
 import 'package:revdiet/models/4_user_food_model.dart';
 import 'package:revdiet/models/4_user_weights_model.dart';
 
 class DatabaseService {
-  //FireAuth
+
+  //FireAuth ---------------------------------------------------------------
   static String getCurrentUserId() {
     return FirebaseAuth.instance.currentUser!.uid;
   }
 
-  //DtUsers
+  //DtUsers ---------------------------------------------------------------
   static Future<UserModel> getUserById(String userId) async {
     final docRef =
         await FirebaseFirestore.instance.collection("dtUsers").doc(userId);
@@ -38,7 +38,7 @@ class DatabaseService {
         .set(user.toJson());
   }
 
-  //dtUsersFood
+  //dtUsersFood ---------------------------------------------------------------
   static Future<void> insertFoodInDtUsersFood(UserFoodModel food) async {
     await FirebaseFirestore.instance
         .collection('dtUsersFood')
@@ -76,7 +76,7 @@ class DatabaseService {
     return listUserIdsFood;
   }
 
-  //dtUsersWeights
+  //dtUsersWeights ---------------------------------------------------------------
   static Future<void> insertWeightInDtUsersWeights(
       UserWeightsModel userWeightsModel) async {
     await FirebaseFirestore.instance
@@ -115,7 +115,7 @@ class DatabaseService {
     return listUserIdsWeights;
   }
 
-  //msFood
+  //msFood ---------------------------------------------------------------
   static Future<List<FoodModel>> getListFoodFromMsFood() async {
     var foodList = <FoodModel>[];
     QuerySnapshot<Map<String, dynamic>> queryFood =

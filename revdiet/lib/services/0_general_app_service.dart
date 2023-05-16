@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 //Metodos generales para la aplicacion
 class GeneralAppService {
-
-  static void showMessage(String message, Color color, BuildContext buildContext) {
+  static void showMessage(
+      String message, Color color, BuildContext buildContext) {
     ScaffoldMessenger.of(buildContext).showSnackBar(
       SnackBar(
         content: Text(
@@ -15,10 +16,12 @@ class GeneralAppService {
     );
   }
 
-  static bool isHourToRestart() {
-    DateTime now = DateTime.now();
-    print(TimeOfDay.now());
-
-    return true;
+  static Future<void> restartCompletedValues() async {
+    //if son las 23:59 reiniciamos
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setInt('completedCalories', 0);
+    preferences.setDouble('completedCarbs', 0);
+    preferences.setDouble('completedProteins', 0);
+    preferences.setDouble('completedFats', 0);
   }
 }

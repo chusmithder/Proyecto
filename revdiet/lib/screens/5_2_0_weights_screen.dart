@@ -32,9 +32,7 @@ class _WeightsScreenState extends State<WeightsScreen> {
     }
   }
 
-  Future<void> _loadinitialData() async {
-    await _loadUserWeights();
-  }
+  
 
   Future<void> _goToRegisterWeightScreen() async {
     await Navigator.of(context).push(
@@ -43,6 +41,10 @@ class _WeightsScreenState extends State<WeightsScreen> {
       ),
     );
     _loadinitialData();
+  }
+
+  Future<void> _loadinitialData() async {
+    await _loadUserWeights();
   }
 
   @override
@@ -64,7 +66,7 @@ class _WeightsScreenState extends State<WeightsScreen> {
               const SizedBox(height: 30),
               _titleDescriptionWidget('Weight history'),
               const SizedBox(height: 15),
-              _foodListWidget(_userWeights),
+              _weightsListWidget(_userWeights),
               const SizedBox(height: 15),
               CustomButton(
                   onTap: _goToRegisterWeightScreen,
@@ -76,7 +78,7 @@ class _WeightsScreenState extends State<WeightsScreen> {
     );
   }
 
-  Widget _foodListWidget(List list) {
+  Widget _weightsListWidget(List list) {
     return Container(
       padding: const EdgeInsets.all(15),
       height: 350,
