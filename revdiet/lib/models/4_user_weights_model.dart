@@ -2,20 +2,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserWeightsModel {
-  // String idFood;
+  // String idWeight;
   String idUser;
   Timestamp date;
   double weight;
 
   UserWeightsModel({
-    // required this.idFood,
+    // required this.idWeight,
     required this.idUser,
     required this.date,
     required this.weight,
   });
 
   Map<String, dynamic> toJson() => {
-        // "idFood": idFood,
+        // "idWeight": idWeight,
         "idUser": idUser,
         "date": date,
         "weight": weight,
@@ -23,7 +23,7 @@ class UserWeightsModel {
 
   static UserWeightsModel fromJson(Map<String, dynamic> json) {
     return UserWeightsModel(
-      // idFood: json['idFood'],
+      // idWeight: json['idWeight'],
       idUser: json['idUser'],
       date: json['date'],
       weight: json['weight'],

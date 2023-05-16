@@ -230,7 +230,7 @@ class HomeScreenState extends State<HomeScreen> {
             // const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 50),
-              child: macroWidget('Calories', completedCalories as double, caloriesToComplete),
+              child: macroWidget('Calories', completedCalories as double, caloriesToComplete, 'kcal'),
             ),
             const SizedBox(height: 20),
             macrosWidget(),
@@ -247,18 +247,18 @@ class HomeScreenState extends State<HomeScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          macroWidget('Carbs', completedCarbs, carbsToComplete),
+          macroWidget('Carbs', completedCarbs, carbsToComplete, 'g'),
           const SizedBox(width: 15),
-          macroWidget('Proteins', completedProteins, proteinsToComplete),
+          macroWidget('Proteins', completedProteins, proteinsToComplete, 'g'),
           const SizedBox(width: 15),
-          macroWidget('Fats', completedFats, fatsToComplete),
+          macroWidget('Fats', completedFats, fatsToComplete, 'g'),
         ],
       ),
     );
   }
 
   Widget macroWidget(
-      String macroName, double completedMacros, int macrosToComplet) {
+      String macroName, double completedMacros, int macrosToComplet, String unidad) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
       decoration: BoxDecoration(
@@ -290,7 +290,13 @@ class HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(width: 5),
               Text(
-                '${macrosToComplet.toString()} g',
+                '${macrosToComplet.toString()}',
+                style:
+                    const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(width: 5),
+              Text(
+                unidad,
                 style:
                     const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
