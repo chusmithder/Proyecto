@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:revdiet/screens/5_1_home_screen.dart';
-import 'package:revdiet/screens/5_2_weights_screen.dart';
+import 'package:revdiet/screens/5_2_0_weights_screen.dart';
 import 'package:revdiet/screens/5_3_user_screen.dart';
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
